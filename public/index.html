@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>⚠️ DEMO APP</h2>
+
+<p>Login</p>
+<input id="username" placeholder="Username">
+<input id="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<p>Balance: $<span id="balance">0</span></p>
+
+<input id="amount" placeholder="Amount">
+<button onclick="deposit()">Deposit</button>
+<button onclick="withdraw()">Withdraw</button>
+
+<script>
+let balance = 5000;
+
+function login() {
+  document.getElementById("balance").innerText = balance;
+}
+
+function deposit() {
+  let amount = Number(document.getElementById("amount").value);
+  balance += amount;
+  document.getElementById("balance").innerText = balance;
+}
+
+function withdraw() {
+  let amount = Number(document.getElementById("amount").value);
+  if (balance >= amount) {
+    balance -= amount;
+    document.getElementById("balance").innerText = balance;
+  } else {
+    alert("Not enough money");
+  }
+}
+</script>
+
+</body>
+</html>
