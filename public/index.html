@@ -54,21 +54,35 @@
 <body>
 
 <div class="card">
+
   <h2>Global Trust Bank</h2>
 
-  <div class="balance">
-    $<span id="balance">5000</span>
+  <!-- LOGIN -->
+  <div id="loginSection">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <br>
+    <button onclick="login()">Login</button>
   </div>
 
-  <input type="number" id="amount" placeholder="Enter amount">
+  <!-- BANK -->
+  <div id="bankSection" style="display:none;">
 
-  <br>
+    <div class="balance">
+      $<span id="balance">0</span>
+    </div>
 
-  <button class="deposit" onclick="deposit()">Deposit</button>
-  <button class="withdraw" onclick="withdraw()">Withdraw</button>
+    <input type="number" id="amount" placeholder="Enter amount">
+    <br>
 
-  <h3>Transaction History</h3>
-  <ul id="history"></ul>
+    <button class="deposit" onclick="deposit()">Deposit</button>
+    <button class="withdraw" onclick="withdraw()">Withdraw</button>
+
+    <h3>Transaction History</h3>
+    <ul id="history"></ul>
+
+  </div>
+
 </div>
 
 <script>
