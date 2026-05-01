@@ -193,8 +193,10 @@ function login() {
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
 
-    document.getElementById("userName").innerText = user;
-
+  } else {
+    alert("wrong login details");
+  }
+}
     updateUI();
   } else {
     alert("Wrong login details");
