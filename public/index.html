@@ -125,7 +125,7 @@ body {
 
     <!-- HEADER -->
     <div class="header">
-      <h3>Hi, Thomas</h3>
+      <h3>Hi, shinichi</h3>
       <span>🔔</span>
     </div>
 
@@ -172,43 +172,40 @@ body {
 </div>
 
 <script>
-let balance = 5000000;
-let history = [];
+
+let users = {
+  "thomas": { password: "1234", balance: 5000000, history: [] },
+  "shinichi": { password: "1111", balance: 10000000, history: [] }
+};
+
+let currentUser = null;
 
 function login() {
-  let user = document.getElementById("username").value;
+  let user = document.getElementById("username").value.toLowerCase();
   let pass = document.getElementById("password").value;
 
-  if (user === "admin" && pass === "1234") {
+  if (users[user] && users[user].password === pass) {
+    currentUser = user;
+
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
 
-    loadData();
+    updateUI();
   } else {
     alert("Wrong login details");
   }
 }
 
-function loadData() {
-  balance = Number(localStorage.getItem("balance")) || 5000000;
-  history = JSON.parse(localStorage.getItem("history")) || [];
-
-  updateUI();
-}
-
-function saveData() {
-  localStorage.setItem("balance", balance);
-  localStorage.setItem("history", JSON.stringify(history));
-}
-
 function updateUI() {
+  let userData = users[currentUser];
+
   document.getElementById("balance").innerText =
-    balance.toLocaleString();
+    userData.balance.toLocaleString();
 
   let list = document.getElementById("history");
   list.innerHTML = "";
 
-  history.forEach(item => {
+  userData.history.forEach(item => {
     let li = document.createElement("li");
     li.innerText = item;
     list.appendChild(li);
@@ -219,10 +216,9 @@ function deposit() {
   let amount = Number(document.getElementById("amount").value);
   if (!amount) return;
 
-  balance += amount;
-  history.push("Deposited $" + amount);
+  users[currentUser].balance += amount;
+  users[currentUser].history.push("Deposited $" + amount);
 
-  saveData();
   updateUI();
 }
 
@@ -230,12 +226,12 @@ function withdraw() {
   let amount = Number(document.getElementById("amount").value);
   if (!amount) return;
 
-  balance -= amount;
-  history.push("Withdrew $" + amount);
+  users[currentUser].balance -= amount;
+  users[currentUser].history.push("Withdrew $" + amount);
 
-  saveData();
   updateUI();
 }
+
 </script>
 </body>
 </html>
