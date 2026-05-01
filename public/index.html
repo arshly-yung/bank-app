@@ -173,8 +173,7 @@ body {
 
 <script>
 
-let users = 
-  JSON.parse(localStorage.getItem("users")) ||{
+let users = JSON.parse(localStorage.getItem("users")) || {
   "thomas": { password: "1234", balance: 5000000, history: [] },
   "shinichi": { password: "1111", balance: 10000000, history: [] }
 };
@@ -184,13 +183,14 @@ let currentUser = null;
 function login() {
   let user = document.getElementById("username").value.toLowerCase();
   let pass = document.getElementById("password").value;
-  document.getElementById("userName").innerText = user;
 
   if (users[user] && users[user].password === pass) {
     currentUser = user;
 
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
+
+    document.getElementById("userName").innerText = user;
 
     updateUI();
   } else {
@@ -202,7 +202,7 @@ function updateUI() {
   let userData = users[currentUser];
 
   document.getElementById("balance").innerText =
-    "$"  + userData.balance.toLocaleString() + ".00"
+    "$" + userData.balance.toLocaleString() + ".00";
 
   let list = document.getElementById("history");
   list.innerHTML = "";
@@ -221,19 +221,26 @@ function deposit() {
   users[currentUser].balance += amount;
   users[currentUser].history.push("Deposited $" + amount);
 
+  localStorage.setItem("users", JSON.stringify(users));
+
   updateUI();
-  localStorage.setItem("users",JSON.stringify(users));
 }
 
 function withdraw() {
   let amount = Number(document.getElementById("amount").value);
   if (!amount) return;
 
+  if (amount > users[currentUser].balance) {
+    alert("Insufficient funds");
+    return;
+  }
+
   users[currentUser].balance -= amount;
   users[currentUser].history.push("Withdrew $" + amount);
 
+  localStorage.setItem("users", JSON.stringify(users));
+
   updateUI();
-  localStorage.setItem("users",JSON.stringify(users));
 }
 
 </script>
