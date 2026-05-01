@@ -2,110 +2,60 @@
 <html>
 <head>
   <title>Global Trust Bank</title>
- 
+
   <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f2f2f7;
-}
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f0f1a;
+      color: white;
+    }
 
-.container {
-  padding: 15px;
-}
+    .container {
+      padding: 20px;
+    }
 
-/* LOGIN */
-.login-card {
-  background: #1c1c1e;
-  padding: 20px;
-  border-radius: 15px;
-  color: white;
-  margin-top: 100px;
-  text-align: center;
-}
+    .login-card {
+      max-width: 350px;
+      margin: 100px auto;
+      padding: 20px;
+      background: #1c1c2e;
+      border-radius: 10px;
+      text-align: center;
+    }
 
-.login-card input {
-  width: 90%;
-  margin: 10px 0;
-  padding: 10px;
-}
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: white;
+    }
 
-.login-card button {
-  padding: 10px 20px;
-}
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background: #6c5ce7;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
 
-/* HEADER */
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
+    .card {
+      background: linear-gradient(90deg, #3a0ca3, #4361ee);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
 
-/* BALANCE CARD */
-.card {
-  background: linear-gradient(135deg, #7b2ff7, #3a7bd5);
-  color: white;
-  padding: 20px;
-  border-radius: 15px;
-}
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-}
-
-.card h1 {
-  margin: 10px 0;
-}
-
-.card button {
-  background: white;
-  border: none;
-  padding: 10px;
-  border-radius: 20px;
-}
-
-/* ACTIONS */
-.actions {
-  margin-top: 15px;
-}
-
-.actions input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.actions button {
-  width: 48%;
-  padding: 10px;
-  margin: 1%;
-}
-
-/* SERVICES */
-.services {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.service {
-  background: white;
-  padding: 10px;
-  text-align: center;
-  border-radius: 10px;
-}
-
-/* HISTORY */
-.history {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-</style>
-
+    .actions button {
+      margin-top: 5px;
+    }
+  </style>
 </head>
 
 <body>
@@ -115,71 +65,44 @@ body {
   <!-- LOGIN -->
   <div id="loginSection" class="login-card">
     <h2>Global Trust Bank</h2>
+
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
+
     <button onclick="login()">Login</button>
   </div>
 
   <!-- DASHBOARD -->
   <div id="dashboard" style="display:none;">
+    <h3>Hi, <span id="userDisplay"></span></h3>
 
-    <!-- HEADER -->
-    <div class="header">
-      <h3>Hi, shinichi</h3>
-      <span>🔔</span>
-    </div>
-
-    <!-- BALANCE -->
     <div class="card">
-      <div class="card-top">
-        <span>Available Balance</span>
-        <span>👁️</span>
-      </div>
-      <h1>$<span id="balance">0</span></h1>
-      <button onclick="deposit()">Add Money</button>
+      <h4>Available Balance</h4>
+      <h2 id="balance">$0</h2>
     </div>
 
-    <!-- ACTIONS -->
+    <input type="number" id="amount" placeholder="Enter amount">
+
     <div class="actions">
-      <input type="number" id="amount" placeholder="Enter amount">
       <button onclick="deposit()">Deposit</button>
       <button onclick="withdraw()">Withdraw</button>
     </div>
-
-    <!-- SERVICES -->
-    <div class="services">
-      <div class="service">🏦<p>To Bank</p></div>
-      <div class="service">📱<p>Airtime</p></div>
-      <div class="service">💾<p>Savings</p></div>
-      <div class="service">💳<p>Card</p></div>
-      <div class="service">🌐<p>Data</p></div>
-      <div class="service">⚡<p>Electricity</p></div>
-      <div class="service">🎯<p>Betting</p></div>
-      <div class="service">➕<p>More</p></div>
-    </div>
-
-    <!-- HISTORY -->
-    <div class="history">
-      <h3>Transaction History</h3>
-      <ul id="history"></ul>
-    </div>
-
   </div>
 
 </div>
 
-</body>
-</div>
-
 <script>
-  localStorage.clear();
-
 let users = JSON.parse(localStorage.getItem("users")) || {
-  "thomas": { password: "1234", balance: 5000000, history: [] },
-  "shinichi": { password: "1111", balance: 10000000, history: [] }
+  "thomas": { password: "1234", balance: 5000000 },
+  "shinichi": { password: "1111", balance: 10000000 }
 };
 
 let currentUser = null;
+let balance = 0;
+
+function saveData() {
+  localStorage.setItem("users", JSON.stringify(users));
+}
 
 function login() {
   let user = document.getElementById("username").value.toLowerCase();
@@ -188,66 +111,49 @@ function login() {
   if (users[user] && users[user].password === pass) {
     currentUser = user;
     balance = users[user].balance;
+
+    document.getElementById("userDisplay").innerText = user;
+
     updateBalance();
 
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
-
-  } else {
-    alert("wrong login details");
-  }
-}
-    updateUI();
   } else {
     alert("Wrong login details");
   }
 }
 
-function updateUI() {
-  let userData = users[currentUser];
-
+function updateBalance() {
   document.getElementById("balance").innerText =
-    "$" + userData.balance.toLocaleString() + ".00";
-
-  let list = document.getElementById("history");
-  list.innerHTML = "";
-
-  userData.history.forEach(item => {
-    let li = document.createElement("li");
-    li.innerText = item;
-    list.appendChild(li);
-  });
+    "$" + balance.toLocaleString();
 }
 
 function deposit() {
   let amount = Number(document.getElementById("amount").value);
-  if (!amount) return;
 
-  users[currentUser].balance += amount;
-  users[currentUser].history.push("Deposited $" + amount);
+  if (amount > 0) {
+    balance += amount;
+    users[currentUser].balance = balance;
 
-  localStorage.setItem("users", JSON.stringify(users));
-
-  updateUI();
+    saveData();
+    updateBalance();
+  }
 }
 
 function withdraw() {
   let amount = Number(document.getElementById("amount").value);
-  if (!amount) return;
 
-  if (amount > users[currentUser].balance) {
-    alert("Insufficient funds");
-    return;
+  if (amount > 0 && amount <= balance) {
+    balance -= amount;
+    users[currentUser].balance = balance;
+
+    saveData();
+    updateBalance();
+  } else {
+    alert("Invalid amount");
   }
-
-  users[currentUser].balance -= amount;
-  users[currentUser].history.push("Withdrew $" + amount);
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  updateUI();
 }
-
 </script>
+
 </body>
 </html>
