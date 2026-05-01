@@ -5,280 +5,253 @@
 
 <style>
 body {
-  margin: 0;
-  font-family: Arial;
-  background: #0c0c1e;
-  color: white;
+  margin:0;
+  font-family:Arial;
+  background:#0b0b1f;
+  color:white;
 }
 
-/* HEADER */
-.header {
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.container { padding:15px; }
+
+input, button {
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  margin-top:10px;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+input { background:#1c1c3a; color:white; }
 
-.logo img {
-  width: 35px;
-}
+button { background:#6c5ce7; color:white; font-weight:bold; }
 
-.container {
-  padding: 15px;
-}
-
-/* CARD */
 .card {
-  background: linear-gradient(135deg,#6c5ce7,#3a0ca3);
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 15px;
+  background:linear-gradient(135deg,#6c5ce7,#3a0ca3);
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:15px;
 }
 
-.card h4 {
-  margin: 0;
-}
-
-.card h2 {
-  margin-top: 10px;
-}
-
-/* INPUT */
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  margin-bottom: 10px;
-  background: #1f1f3a;
-  color: white;
-}
-
-/* BUTTON */
-button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  margin-top: 8px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.deposit { background: #6c5ce7; }
-.withdraw { background: #2d2d6e; }
-
-/* GRID */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 10px;
-  margin-top: 20px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:15px;
 }
 
 .grid div {
-  background: #1c1c2e;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
+  background:#1c1c2e;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
 }
 
-/* HISTORY */
-.history {
-  margin-top: 20px;
-  background: #1c1c2e;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-.history ul {
-  list-style: none;
-  padding: 0;
-}
-
-/* CRYPTO */
-.crypto {
-  margin-top: 20px;
-  background: #1c1c2e;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-.crypto div {
-  margin-bottom: 10px;
-}
-
-/* SUPPORT */
-.support {
-  margin-top: 20px;
-  background: #1c1c2e;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
+.section {
+  background:#1c1c2e;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginSection" class="container">
+<div id="auth" class="container">
   <h2>GLOBAL TRUST BANK</h2>
-  <input id="username" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
+
+  <input id="newUser" placeholder="Create Username">
+  <input id="newPass" placeholder="Create Password">
+  <input id="newPin" placeholder="Create 4-digit PIN">
+
+  <button onclick="register()">Create Account</button>
+
+  <hr>
+
+  <input id="loginUser" placeholder="Username">
+  <input id="loginPass" placeholder="Password">
   <button onclick="login()">Login</button>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none">
+<div id="dashboard" style="display:none" class="container">
 
-  <div class="header">
-    <div class="logo">
-      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-      <h3>GLOBAL TRUST</h3>
-    </div>
-    🔔
+  <h3>Hi, <span id="user"></span></h3>
+
+  <div class="card">
+    <h4>Balance</h4>
+    <h2 id="balance">$0</h2>
+    <small>Account No: <span id="acc"></span></small>
   </div>
 
-  <div class="container">
+  <input id="amount" placeholder="Amount">
 
-    <h3>Hi, <span id="userDisplay"></span></h3>
+  <button onclick="deposit()">Deposit</button>
+  <button onclick="withdraw()">Withdraw</button>
 
-    <div class="card">
-      <h4>Available Balance</h4>
-      <h2 id="balance">$0</h2>
-    </div>
-
-    <input type="number" id="amount" placeholder="Enter amount">
-
-    <button class="deposit" onclick="deposit()">Deposit</button>
-    <button class="withdraw" onclick="withdraw()">Withdraw</button>
-
-    <!-- SERVICES -->
-    <div class="grid">
-      <div>🏦 Bank</div>
-      <div>📱 Airtime</div>
-      <div>💾 Savings</div>
-      <div>🌐 Data</div>
-      <div>⚡ Bills</div>
-      <div>➕ More</div>
-    </div>
-
-    <!-- HISTORY -->
-    <div class="history">
-      <h4>Transaction History</h4>
-      <ul id="historyList"></ul>
-    </div>
-
-    <!-- CRYPTO -->
-    <div class="crypto">
-      <h4>Crypto Market</h4>
-      <div>BTC: $<span id="btc"></span></div>
-      <div>ETH: $<span id="eth"></span></div>
-      <div>XRP: $<span id="xrp"></span></div>
-    </div>
-
-    <!-- SUPPORT -->
-    <div class="support">
-      <h4>Customer Support</h4>
-      <p>Email: support@globaltrust.com</p>
-      <p>Live Chat: Available 24/7</p>
-    </div>
-
+  <div class="section">
+    <h4>Send Money</h4>
+    <input id="toAcc" placeholder="Recipient Account Number">
+    <input id="sendAmount" placeholder="Amount">
+    <input id="pin" placeholder="Enter PIN">
+    <button onclick="send()">Send</button>
   </div>
+
+  <div class="grid">
+    <div>📱 Airtime</div>
+    <div>🌐 Data</div>
+    <div>⚡ Electricity</div>
+    <div>🏦 Bank</div>
+    <div>💳 Card</div>
+    <div>➕ More</div>
+  </div>
+
+  <div class="section">
+    <h4>Transaction History</h4>
+    <ul id="history"></ul>
+  </div>
+
+  <div class="section">
+    <h4>Crypto Market</h4>
+    <p>₿ BTC: $<span id="btc"></span></p>
+    <p>Ξ ETH: $<span id="eth"></span></p>
+    <p>✕ XRP: $<span id="xrp"></span></p>
+  </div>
+
+  <div class="section">
+    <h4>Notifications</h4>
+    <ul id="notify"></ul>
+  </div>
+
+  <div class="section">
+    <h4>Support</h4>
+    <p>globaltrustsupport@gmail.com</p>
+  </div>
+
 </div>
 
 <script>
 
-/* USERS */
-let users = JSON.parse(localStorage.getItem("users")) || {
-  "shinichi": { password: "1111", balance: 10000000, history: [] },
-  "thomas": { password: "1234", balance: 5000000, history: [] }
-};
-
+/* STORAGE */
+let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = null;
-let balance = 0;
+
+/* REGISTER */
+function register() {
+  let u = newUser.value.toLowerCase();
+  let p = newPass.value;
+  let pin = newPin.value;
+
+  if (!u || !p || !pin) return alert("Fill all fields");
+
+  let acc = "GTB" + Math.floor(Math.random()*1000000000);
+
+  users[u] = {
+    password:p,
+    pin:pin,
+    balance:10000000,
+    acc:acc,
+    history:["$10,000,000 funded by Global Trust Bank (Demo)"],
+    notify:["Account created successfully"]
+  };
+
+  save();
+  alert("Account created. Your account number: " + acc);
+}
 
 /* LOGIN */
 function login() {
-  let user = document.getElementById("username").value.toLowerCase();
-  let pass = document.getElementById("password").value;
+  let u = loginUser.value.toLowerCase();
+  let p = loginPass.value;
 
-  if (users[user] && users[user].password === pass) {
-    currentUser = user;
-    balance = users[user].balance;
-
-    document.getElementById("loginSection").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-    document.getElementById("userDisplay").innerText = user;
-
-    updateBalance();
-    loadHistory();
-  } else {
-    alert("Wrong login details");
-  }
+  if (users[u] && users[u].password === p) {
+    currentUser = u;
+    auth.style.display="none";
+    dashboard.style.display="block";
+    load();
+  } else alert("Wrong login");
 }
 
-/* UPDATE BALANCE */
-function updateBalance() {
-  document.getElementById("balance").innerText =
-    "$" + balance.toLocaleString();
+/* LOAD USER */
+function load() {
+  user.innerText=currentUser;
+  balance.innerText="$"+users[currentUser].balance.toLocaleString();
+  acc.innerText=users[currentUser].acc;
+
+  history.innerHTML="";
+  users[currentUser].history.forEach(h=>{
+    history.innerHTML+="<li>"+h+"</li>";
+  });
+
+  notify.innerHTML="";
+  users[currentUser].notify.forEach(n=>{
+    notify.innerHTML+="<li>"+n+"</li>";
+  });
+}
+
+/* SAVE */
+function save() {
+  localStorage.setItem("users",JSON.stringify(users));
 }
 
 /* DEPOSIT */
 function deposit() {
-  let amount = Number(document.getElementById("amount").value);
-  if (amount > 0) {
-    balance += amount;
-    users[currentUser].balance = balance;
-    users[currentUser].history.push("Deposited $" + amount);
-    save();
+  let amt=Number(amount.value);
+  if(amt>0){
+    users[currentUser].balance+=amt;
+    users[currentUser].history.push("Deposited $"+amt);
+    users[currentUser].notify.push("Deposit successful");
+    save(); load();
   }
 }
 
 /* WITHDRAW */
 function withdraw() {
-  let amount = Number(document.getElementById("amount").value);
-  if (amount > 0 && amount <= balance) {
-    balance -= amount;
-    users[currentUser].balance = balance;
-    users[currentUser].history.push("Withdrew $" + amount);
-    save();
+  let amt=Number(amount.value);
+  if(amt>0 && amt<=users[currentUser].balance){
+    users[currentUser].balance-=amt;
+    users[currentUser].history.push("Withdrew $"+amt);
+    users[currentUser].notify.push("Withdrawal successful");
+    save(); load();
   }
 }
 
-/* SAVE */
-function save() {
-  localStorage.setItem("users", JSON.stringify(users));
-  updateBalance();
-  loadHistory();
+/* SEND */
+function send() {
+  let accNum=toAcc.value;
+  let amt=Number(sendAmount.value);
+  let pinVal=pin.value;
+
+  let receiver=Object.values(users).find(u=>u.acc===accNum);
+
+  if(!receiver) return alert("Invalid account");
+
+  if(pinVal!==users[currentUser].pin) return alert("Wrong PIN");
+
+  if(amt>0 && amt<=users[currentUser].balance){
+
+    users[currentUser].balance-=amt;
+    receiver.balance+=amt;
+
+    users[currentUser].history.push("Sent $"+amt+" to "+accNum);
+    receiver.history.push("Received $"+amt);
+
+    users[currentUser].notify.push("Transfer sent");
+    receiver.notify.push("Money received");
+
+    save(); load();
+  }
 }
 
-/* LOAD HISTORY */
-function loadHistory() {
-  let list = document.getElementById("historyList");
-  list.innerHTML = "";
+/* CRYPTO API */
+async function crypto(){
+  let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple&vs_currencies=usd");
+  let d=await r.json();
 
-  users[currentUser].history.forEach(item => {
-    let li = document.createElement("li");
-    li.innerText = item;
-    list.appendChild(li);
-  });
+  btc.innerText=d.bitcoin.usd;
+  eth.innerText=d.ethereum.usd;
+  xrp.innerText=d.ripple.usd;
 }
-
-/* FAKE CRYPTO (LIVE-LIKE) */
-function loadCrypto() {
-  document.getElementById("btc").innerText = (60000 + Math.random()*2000).toFixed(2);
-  document.getElementById("eth").innerText = (3000 + Math.random()*200).toFixed(2);
-  document.getElementById("xrp").innerText = (0.5 + Math.random()*0.2).toFixed(2);
-}
-setInterval(loadCrypto,2000);
+setInterval(crypto,3000);
 
 </script>
 
