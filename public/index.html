@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GLOBAL TRUST BANK</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#0b0f2a;
+  background:#0b0f2c;
   color:white;
 }
 
@@ -16,215 +15,219 @@ body{
 .header{
   background:linear-gradient(135deg,#1e3c72,#2a5298);
   padding:20px;
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
 }
 
-/* CARDS */
-.container{padding:15px;}
+/* CONTAINER */
+.container{
+  padding:15px;
+}
 
+/* CARD */
 .card{
-  background:#141c4f;
-  border-radius:15px;
+  background:#151a4f;
+  border-radius:18px;
   padding:20px;
   margin-bottom:15px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.4);
+  box-shadow:0 10px 20px rgba(0,0,0,0.5);
 }
 
 /* BALANCE */
 .balance{
-  font-size:30px;
+  font-size:32px;
   color:#00ff99;
 }
 
 .yen{
+  color:#aaa;
   font-size:14px;
-  color:#ccc;
 }
 
-/* INPUTS */
-input{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:10px;
-  border:none;
-}
-
-/* BUTTON */
-button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:10px;
-  background:#2ecc71;
-  color:white;
-  font-size:15px;
-}
-
-/* ACTION GRID */
+/* ACTIONS */
 .actions{
   display:flex;
   justify-content:space-between;
-  text-align:center;
+  margin-top:10px;
 }
 
 .action{
   width:30%;
   background:#1d2766;
-  padding:15px;
+  padding:12px;
+  text-align:center;
   border-radius:10px;
 }
 
-/* CRYPTO */
-.crypto{
-  display:flex;
-  justify-content:space-between;
-  margin:10px 0;
-}
-
-/* NOTICE */
-.notice{
-  background:#222;
-  padding:10px;
-  border-radius:8px;
+/* INPUT */
+input{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
   margin-top:10px;
 }
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:#00c853;
+  color:white;
+  font-weight:bold;
+}
+
+/* CRYPTO TABLE */
+.crypto-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.crypto-name{
+  font-weight:bold;
+}
+
+.green{
+  color:#00e676;
+}
+
+.red{
+  color:#ff5252;
+}
+
+/* MINI CHART */
+canvas{
+  width:80px !important;
+  height:30px !important;
+}
 </style>
+
 </head>
 
 <body>
 
-<div class="header" id="title">GLOBAL TRUST BANK</div>
+<div class="header">GLOBAL TRUST BANK</div>
 
 <div class="container">
 
-<!-- BALANCE -->
 <div class="card">
-  <div id="balanceLabel">Available Balance</div>
-  <div class="balance">$10,000,000</div>
-  <div class="yen" id="yen"></div>
+<h3>Available Balance</h3>
+<div class="balance" id="usd">$10,000,000</div>
+<div class="yen" id="yen">≈ ¥1,500,000,000</div>
+
+<div class="actions">
+<div class="action">💸 Send</div>
+<div class="action">📱 Airtime</div>
+<div class="action">💡 Bills</div>
+</div>
 </div>
 
-<!-- ACTIONS -->
 <div class="card">
-  <div class="actions">
-    <div class="action">Send</div>
-    <div class="action">Airtime</div>
-    <div class="action">Bills</div>
-  </div>
+<input placeholder="Enter amount">
+<button>Deposit</button>
+<button>Withdraw</button>
 </div>
 
-<!-- TRANSACTION -->
 <div class="card">
-  <input id="amount" placeholder="Enter amount">
-  <button onclick="deposit()" id="depositBtn">Deposit</button>
-  <button onclick="withdraw()" id="withdrawBtn">Withdraw</button>
+<h3>Transfer</h3>
+<input placeholder="Account Number">
+<input placeholder="Enter PIN">
+<button>Send Money</button>
 </div>
 
-<!-- TRANSFER -->
 <div class="card">
-  <h3 id="transferTitle">Transfer</h3>
-  <input id="accNum" placeholder="Account Number">
-  <input id="pin" placeholder="Enter PIN">
-  <button onclick="sendMoney()" id="sendBtn">Send Money</button>
+<h3>Crypto Market</h3>
+
+<div class="crypto-row">
+<div>
+<div class="crypto-name">BTC</div>
+<div id="btcPrice">$78,000</div>
+</div>
+<canvas id="btcChart"></canvas>
+<div id="btcChange" class="green">+2.4%</div>
 </div>
 
-<!-- CRYPTO -->
+<div class="crypto-row">
+<div>
+<div class="crypto-name">ETH</div>
+<div id="ethPrice">$2,300</div>
+</div>
+<canvas id="ethChart"></canvas>
+<div id="ethChange" class="green">+1.8%</div>
+</div>
+
+<div class="crypto-row">
+<div>
+<div class="crypto-name">XRP</div>
+<div id="xrpPrice">$0.60</div>
+</div>
+<canvas id="xrpChart"></canvas>
+<div id="xrpChange" class="red">-0.5%</div>
+</div>
+
+</div>
+
 <div class="card">
-  <h3 id="cryptoTitle">Crypto Market</h3>
-
-  <div class="crypto">
-    <span>BTC</span><span id="btc"></span>
-  </div>
-
-  <div class="crypto">
-    <span>ETH</span><span id="eth"></span>
-  </div>
-
-  <div class="crypto">
-    <span>XRP</span><span id="xrp"></span>
-  </div>
+<h3>Support</h3>
+globaltrustsupport@gmail.com
 </div>
 
-<!-- HISTORY -->
-<div class="card">
-  <h3 id="historyTitle">History</h3>
-  <div id="history"></div>
 </div>
 
-<!-- SUPPORT -->
-<div class="card">
-  <h3 id="supportTitle">Support</h3>
-  globaltrustsupport@gmail.com
-</div>
-
-<div id="notice"></div>
-
-</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-let balance = 10000000;
-let history = [];
-let userPin = "1234";
 
-/* USD → JPY conversion (~150 rate) */
-function updateYen(){
-  let yen = balance * 150;
-  document.getElementById("yen").innerText =
-    "≈ ¥" + yen.toLocaleString();
+/* USD → YEN */
+let usd = 10000000;
+let rate = 150;
+document.getElementById("yen").innerText = "≈ ¥" + (usd*rate).toLocaleString();
+
+/* RANDOM PRICE UPDATE */
+function updatePrices(){
+  let btc = 78000 + Math.random()*2000;
+  let eth = 2300 + Math.random()*200;
+  let xrp = 0.5 + Math.random()*0.2;
+
+  document.getElementById("btcPrice").innerText = "$" + btc.toFixed(0);
+  document.getElementById("ethPrice").innerText = "$" + eth.toFixed(0);
+  document.getElementById("xrpPrice").innerText = "$" + xrp.toFixed(2);
+}
+setInterval(updatePrices,2000);
+
+/* MINI CHART FUNCTION */
+function createChart(id,color){
+  return new Chart(document.getElementById(id),{
+    type:'line',
+    data:{
+      labels:[1,2,3,4,5,6],
+      datasets:[{
+        data:[5,6,7,6,8,9],
+        borderColor:color,
+        borderWidth:2,
+        fill:false,
+        tension:0.4
+      }]
+    },
+    options:{
+      plugins:{legend:{display:false}},
+      scales:{x:{display:false},y:{display:false}}
+    }
+  });
 }
 
-function update(){
-  document.getElementById("history").innerHTML =
-    history.slice().reverse().join("<br>");
-}
+/* CREATE CHARTS */
+createChart("btcChart","#00e676");
+createChart("ethChart","#00e676");
+createChart("xrpChart","#ff5252");
 
-function notify(msg){
-  document.getElementById("notice").innerHTML =
-    "<div class='notice'>" + msg + "</div>";
-}
+</script>
 
-function deposit(){
-  let amt = Number(amount.value);
-  history.push("Deposited $" + amt);
-  notify("Deposit successful");
-  update();
-}
-
-function withdraw(){
-  let amt = Number(amount.value);
-  history.push("Withdrew $" + amt);
-  notify("Withdrawal successful");
-  update();
-}
-
-function sendMoney(){
-  if(pin.value !== userPin){
-    notify("Wrong PIN");
-    return;
-  }
-  history.push("Sent $" + amount.value + " to " + accNum.value);
-  notify("Transfer successful");
-  update();
-}
-
-/* FAKE LIVE CRYPTO */
-function crypto(){
-  btc.innerText = "$" + (78000 + Math.random()*1000).toFixed(0);
-  eth.innerText = "$" + (2300 + Math.random()*200).toFixed(0);
-  xrp.innerText = "$" + (0.5 + Math.random()*0.2).toFixed(2);
-}
-setInterval(crypto,2000);
-
-/* AUTO LANGUAGE (Japan detection) */
-let lang = navigator.language;
-
-if(lang.includes("ja")){
-  document.getElementById("balanceLabel").innerText="残高";
-  document.getElementById("depositBtn").innerText="入金";
-  document.getElementById("withdrawBtn").innerText="出金";
-  document.getElementById("transferTitle").innerText="送金";
-  document.getElementById("sendBtn").innerText="送る";
-  document
+</body>
+</html>
