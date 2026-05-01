@@ -184,7 +184,7 @@ let currentUser = null;
 function login() {
   let user = document.getElementById("username").value.toLowerCase();
   let pass = document.getElementById("password").value;
-  document.getElementById("userName").innerText = current user
+  document.getElementById("userName").innerText = user;
 
   if (users[user] && users[user].password === pass) {
     currentUser = user;
