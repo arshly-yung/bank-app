@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>GLOBAL TRUST BANK</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLOBAL TRUST BANK</title>
 
 <style>
 body{
@@ -12,59 +12,79 @@ body{
   color:white;
 }
 
-.container{
-  padding:20px;
-}
-
+/* HEADER */
 .header{
+  background:linear-gradient(135deg,#1e3c72,#2a5298);
+  padding:20px;
   font-size:22px;
   font-weight:bold;
-  margin-bottom:20px;
 }
 
+/* CARDS */
+.container{padding:15px;}
+
 .card{
-  background:#131a4d;
+  background:#141c4f;
   border-radius:15px;
   padding:20px;
   margin-bottom:15px;
-  box-shadow:0 0 10px rgba(0,0,0,0.3);
+  box-shadow:0 5px 15px rgba(0,0,0,0.4);
 }
 
+/* BALANCE */
 .balance{
-  font-size:28px;
+  font-size:30px;
   color:#00ff99;
 }
 
+.yen{
+  font-size:14px;
+  color:#ccc;
+}
+
+/* INPUTS */
 input{
   width:100%;
   padding:12px;
-  border-radius:8px;
+  margin:8px 0;
+  border-radius:10px;
   border:none;
-  margin:6px 0;
 }
 
+/* BUTTON */
 button{
   width:100%;
   padding:12px;
-  border:none;
-  border-radius:8px;
   margin-top:10px;
-  font-size:15px;
+  border:none;
+  border-radius:10px;
   background:#2ecc71;
   color:white;
+  font-size:15px;
 }
 
-.crypto-row{
+/* ACTION GRID */
+.actions{
+  display:flex;
+  justify-content:space-between;
+  text-align:center;
+}
+
+.action{
+  width:30%;
+  background:#1d2766;
+  padding:15px;
+  border-radius:10px;
+}
+
+/* CRYPTO */
+.crypto{
   display:flex;
   justify-content:space-between;
   margin:10px 0;
 }
 
-.history{
-  font-size:13px;
-  color:#ccc;
-}
-
+/* NOTICE */
 .notice{
   background:#222;
   padding:10px;
@@ -76,57 +96,68 @@ button{
 
 <body>
 
+<div class="header" id="title">GLOBAL TRUST BANK</div>
+
 <div class="container">
 
-<div class="header">GLOBAL TRUST BANK</div>
-
+<!-- BALANCE -->
 <div class="card">
-  <div>Account No: <span id="acc"></span></div>
+  <div id="balanceLabel">Available Balance</div>
+  <div class="balance">$10,000,000</div>
+  <div class="yen" id="yen"></div>
 </div>
 
+<!-- ACTIONS -->
 <div class="card">
-  <div>Available Balance</div>
-  <div id="balance" class="balance">$10,000,000</div>
+  <div class="actions">
+    <div class="action">Send</div>
+    <div class="action">Airtime</div>
+    <div class="action">Bills</div>
+  </div>
 </div>
 
+<!-- TRANSACTION -->
 <div class="card">
   <input id="amount" placeholder="Enter amount">
-  <button onclick="deposit()">Deposit</button>
-  <button onclick="withdraw()">Withdraw</button>
+  <button onclick="deposit()" id="depositBtn">Deposit</button>
+  <button onclick="withdraw()" id="withdrawBtn">Withdraw</button>
 </div>
 
+<!-- TRANSFER -->
 <div class="card">
-  <h3>Transfer</h3>
+  <h3 id="transferTitle">Transfer</h3>
   <input id="accNum" placeholder="Account Number">
   <input id="pin" placeholder="Enter PIN">
-  <button onclick="sendMoney()">Send Money</button>
+  <button onclick="sendMoney()" id="sendBtn">Send Money</button>
 </div>
 
+<!-- CRYPTO -->
 <div class="card">
-  <h3>Crypto Market</h3>
+  <h3 id="cryptoTitle">Crypto Market</h3>
 
-  <div class="crypto-row">
+  <div class="crypto">
     <span>BTC</span><span id="btc"></span>
   </div>
 
-  <div class="crypto-row">
+  <div class="crypto">
     <span>ETH</span><span id="eth"></span>
   </div>
 
-  <div class="crypto-row">
+  <div class="crypto">
     <span>XRP</span><span id="xrp"></span>
   </div>
-
 </div>
 
+<!-- HISTORY -->
 <div class="card">
-  <h3>Transaction History</h3>
-  <div id="history" class="history"></div>
+  <h3 id="historyTitle">History</h3>
+  <div id="history"></div>
 </div>
 
+<!-- SUPPORT -->
 <div class="card">
-  <h3>Support</h3>
-  <div>globaltrustsupport@gmail.com</div>
+  <h3 id="supportTitle">Support</h3>
+  globaltrustsupport@gmail.com
 </div>
 
 <div id="notice"></div>
@@ -138,25 +169,25 @@ let balance = 10000000;
 let history = [];
 let userPin = "1234";
 
-document.getElementById("acc").innerText =
-  Math.floor(1000000000 + Math.random()*9000000000);
+/* USD → JPY conversion (~150 rate) */
+function updateYen(){
+  let yen = balance * 150;
+  document.getElementById("yen").innerText =
+    "≈ ¥" + yen.toLocaleString();
+}
 
 function update(){
-  document.getElementById("balance").innerText =
-    "$" + balance.toLocaleString();
-
   document.getElementById("history").innerHTML =
     history.slice().reverse().join("<br>");
 }
 
 function notify(msg){
   document.getElementById("notice").innerHTML =
-    "<div class='notice'>"+msg+"</div>";
+    "<div class='notice'>" + msg + "</div>";
 }
 
 function deposit(){
   let amt = Number(amount.value);
-  balance += amt;
   history.push("Deposited $" + amt);
   notify("Deposit successful");
   update();
@@ -164,7 +195,6 @@ function deposit(){
 
 function withdraw(){
   let amt = Number(amount.value);
-  balance -= amt;
   history.push("Withdrew $" + amt);
   notify("Withdrawal successful");
   update();
@@ -175,30 +205,26 @@ function sendMoney(){
     notify("Wrong PIN");
     return;
   }
-  let amt = Number(amount.value);
-  balance -= amt;
-  history.push("Sent $" + amt + " to " + accNum.value);
+  history.push("Sent $" + amount.value + " to " + accNum.value);
   notify("Transfer successful");
   update();
 }
 
 /* FAKE LIVE CRYPTO */
 function crypto(){
-  document.getElementById("btc").innerText =
-    "$" + (78000 + Math.random()*1000).toFixed(0);
-
-  document.getElementById("eth").innerText =
-    "$" + (2300 + Math.random()*200).toFixed(0);
-
-  document.getElementById("xrp").innerText =
-    "$" + (0.5 + Math.random()*0.2).toFixed(2);
+  btc.innerText = "$" + (78000 + Math.random()*1000).toFixed(0);
+  eth.innerText = "$" + (2300 + Math.random()*200).toFixed(0);
+  xrp.innerText = "$" + (0.5 + Math.random()*0.2).toFixed(2);
 }
-
 setInterval(crypto,2000);
 
-update();
-crypto();
-</script>
+/* AUTO LANGUAGE (Japan detection) */
+let lang = navigator.language;
 
-</body>
-</html>
+if(lang.includes("ja")){
+  document.getElementById("balanceLabel").innerText="残高";
+  document.getElementById("depositBtn").innerText="入金";
+  document.getElementById("withdrawBtn").innerText="出金";
+  document.getElementById("transferTitle").innerText="送金";
+  document.getElementById("sendBtn").innerText="送る";
+  document
