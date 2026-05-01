@@ -86,8 +86,34 @@
 </div>
 
 <script>
-let balance = 5000;
+let balance = 0;
 let history = [];
+
+function login() {
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
+
+  if (user === "admin" && pass === "1234") {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("bankSection").style.display = "block";
+
+    loadData();
+  } else {
+    alert("Wrong login details");
+  }
+}
+
+function loadData() {
+  balance = Number(localStorage.getItem("balance")) || 5000;
+  history = JSON.parse(localStorage.getItem("history")) || [];
+
+  updateUI();
+}
+
+function saveData() {
+  localStorage.setItem("balance", balance);
+  localStorage.setItem("history", JSON.stringify(history));
+}
 
 function updateUI() {
   document.getElementById("balance").innerText = balance;
@@ -108,6 +134,8 @@ function deposit() {
 
   balance += amount;
   history.push("Deposited $" + amount);
+
+  saveData();
   updateUI();
 }
 
@@ -117,11 +145,10 @@ function withdraw() {
 
   balance -= amount;
   history.push("Withdrew $" + amount);
+
+  saveData();
   updateUI();
 }
-
-updateUI();
 </script>
-
 </body>
 </html>
