@@ -186,6 +186,8 @@ function login() {
 
   if (users[user] && users[user].password === pass) {
     currentUser = user;
+    balance = users[user].balance;
+    updateBalance();
 
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
