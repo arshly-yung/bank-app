@@ -2,10 +2,11 @@
 <html>
 <head>
   <title>Global Trust Bank</title>
- <style>
+ 
+  <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #f2f2f7;
 }
 
@@ -13,40 +14,75 @@ body {
   padding: 15px;
 }
 
+/* LOGIN */
+.login-card {
+  background: #1c1c1e;
+  padding: 20px;
+  border-radius: 15px;
+  color: white;
+  margin-top: 100px;
+  text-align: center;
+}
+
+.login-card input {
+  width: 90%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.login-card button {
+  padding: 10px 20px;
+}
+
+/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  margin-bottom: 10px;
 }
 
+/* BALANCE CARD */
 .card {
   background: linear-gradient(135deg, #7b2ff7, #3a7bd5);
   color: white;
   padding: 20px;
   border-radius: 15px;
-  margin-top: 15px;
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
 }
 
 .card h1 {
   margin: 10px 0;
-  font-size: 28px;
 }
 
-.add-btn {
+.card button {
   background: white;
-  color: #3a7bd5;
   border: none;
-  padding: 10px 15px;
+  padding: 10px;
   border-radius: 20px;
-  font-weight: bold;
 }
 
+/* ACTIONS */
+.actions {
+  margin-top: 15px;
+}
+
+.actions input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.actions button {
+  width: 48%;
+  padding: 10px;
+  margin: 1%;
+}
+
+/* SERVICES */
 .services {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -56,15 +92,17 @@ body {
 
 .service {
   background: white;
-  padding: 15px 5px;
-  border-radius: 10px;
+  padding: 10px;
   text-align: center;
-  font-size: 14px;
+  border-radius: 10px;
 }
 
-.service p {
-  margin-top: 5px;
-  font-size: 12px;
+/* HISTORY */
+.history {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
 }
 </style>
 
@@ -74,45 +112,67 @@ body {
 
 <div class="container">
 
-  <!-- HEADER -->
-  <div class="header">
-    <h2>Hi, shinichi</h2>
-    <span class="bell">🔔</span>
+  <!-- LOGIN -->
+  <div id="loginSection" class="login-card">
+    <h2>Global Trust Bank</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
   </div>
 
-  <!-- BALANCE CARD -->
-  <div class="card">
-    <div class="card-top">
-      <span>Available Balance</span>
-      <span>👁️</span>
+  <!-- DASHBOARD -->
+  <div id="dashboard" style="display:none;">
+
+    <!-- HEADER -->
+    <div class="header">
+      <h3>Hi, Thomas</h3>
+      <span>🔔</span>
     </div>
-    <h1>$5,000,000.00</h1>
-    <button class="add-btn">Add Money</button>
-  </div>
 
-  <!-- SERVICES -->
-  <div class="services">
+    <!-- BALANCE -->
+    <div class="card">
+      <div class="card-top">
+        <span>Available Balance</span>
+        <span>👁️</span>
+      </div>
+      <h1>$<span id="balance">0</span></h1>
+      <button onclick="deposit()">Add Money</button>
+    </div>
 
-    <div class="service">🏦<p>To Bank</p></div>
-    <div class="service">📱<p>Airtime</p></div>
-    <div class="service">💾<p>Savings</p></div>
-    <div class="service">💳<p>Card</p></div>
+    <!-- ACTIONS -->
+    <div class="actions">
+      <input type="number" id="amount" placeholder="Enter amount">
+      <button onclick="deposit()">Deposit</button>
+      <button onclick="withdraw()">Withdraw</button>
+    </div>
 
-    <div class="service">🌐<p>Data</p></div>
-    <div class="service">⚡<p>Electricity</p></div>
-    <div class="service">🎯<p>Betting</p></div>
-    <div class="service">➕<p>More</p></div>
+    <!-- SERVICES -->
+    <div class="services">
+      <div class="service">🏦<p>To Bank</p></div>
+      <div class="service">📱<p>Airtime</p></div>
+      <div class="service">💾<p>Savings</p></div>
+      <div class="service">💳<p>Card</p></div>
+      <div class="service">🌐<p>Data</p></div>
+      <div class="service">⚡<p>Electricity</p></div>
+      <div class="service">🎯<p>Betting</p></div>
+      <div class="service">➕<p>More</p></div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history">
+      <h3>Transaction History</h3>
+      <ul id="history"></ul>
+    </div>
 
   </div>
 
 </div>
 
 </body>
-
 </div>
 
 <script>
-let balance = 0;
+let balance = 5000000;
 let history = [];
 
 function login() {
@@ -121,7 +181,7 @@ function login() {
 
   if (user === "admin" && pass === "1234") {
     document.getElementById("loginSection").style.display = "none";
-    document.getElementById("bankSection").style.display = "block";
+    document.getElementById("dashboard").style.display = "block";
 
     loadData();
   } else {
@@ -130,7 +190,7 @@ function login() {
 }
 
 function loadData() {
-  balance = Number(localStorage.getItem("balance")) || 5000;
+  balance = Number(localStorage.getItem("balance")) || 5000000;
   history = JSON.parse(localStorage.getItem("history")) || [];
 
   updateUI();
@@ -142,7 +202,8 @@ function saveData() {
 }
 
 function updateUI() {
-  document.getElementById("balance").innerText = balance;
+  document.getElementById("balance").innerText =
+    balance.toLocaleString();
 
   let list = document.getElementById("history");
   list.innerHTML = "";
