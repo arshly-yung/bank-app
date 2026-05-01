@@ -2,270 +2,132 @@
 <html>
 <head>
 <title>GLOBAL TRUST BANK</title>
-
 <style>
-body {
-  margin:0;
-  font-family:Arial;
-  background:#0b0b1f;
-  color:white;
-}
-
-.container { padding:15px; }
-
-input, button {
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:none;
-  margin-top:10px;
-}
-
-input { background:#1c1c3a; color:white; }
-
-button { background:#6c5ce7; color:white; font-weight:bold; }
-
-.card {
-  background:linear-gradient(135deg,#6c5ce7,#3a0ca3);
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:15px;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:15px;
-}
-
-.grid div {
-  background:#1c1c2e;
-  padding:15px;
-  border-radius:10px;
-  text-align:center;
-}
-
-.section {
-  background:#1c1c2e;
-  padding:15px;
-  border-radius:10px;
-  margin-top:15px;
-}
+body { font-family: Arial; background:#0c0f2c; color:white; text-align:center; }
+.container { max-width:400px; margin:auto; margin-top:40px; }
+input,button { width:100%; padding:10px; margin:5px 0; }
+.card { background:#1a1f4a; padding:20px; border-radius:10px; }
 </style>
 </head>
 
 <body>
 
-<div id="auth" class="container">
-  <h2>GLOBAL TRUST BANK</h2>
+<div class="container" id="auth">
+<h2>GLOBAL TRUST BANK</h2>
 
-  <input id="newUser" placeholder="Create Username">
-  <input id="newPass" placeholder="Create Password">
-  <input id="newPin" placeholder="Create 4-digit PIN">
+<input id="username" placeholder="Username">
+<input id="password" placeholder="Password">
+<input id="pin" placeholder="PIN">
 
-  <button onclick="register()">Create Account</button>
-
-  <hr>
-
-  <input id="username" placeholder="Username">
-  <input id="password" placeholder="Password">
-  <button onclick="login()">Login</button>
+<button onclick="register()">Create Account</button>
+<button onclick="login()">Login</button>
 </div>
 
-<div id="dashboard" style="display:none" class="container">
+<div class="container" id="dashboard" style="display:none">
+<h3>Welcome <span id="user"></span></h3>
 
-  <h3>Hi, <span id="user"></span></h3>
+<div class="card">
+Balance: $<span id="balance"></span>
+</div>
 
-  <div class="card">
-    <h4>Balance</h4>
-    <h2 id="balance">$0</h2>
-    <small>Account No: <span id="acc"></span></small>
-  </div>
+<input id="amount" placeholder="Amount">
 
-  <input id="amount" placeholder="Amount">
+<h4>Transfer</h4>
+<input id="toAcc" placeholder="Account Number">
+<input id="pin2" placeholder="Enter PIN">
+<button onclick="transfer()">Send Money</button>
 
-  <button onclick="deposit()">Deposit</button>
-  <button onclick="withdraw()">Withdraw</button>
+<h4>Crypto Prices</h4>
+<div id="crypto"></div>
 
-  <div class="section">
-    <h4>Send Money</h4>
-    <input id="toAcc" placeholder="Recipient Account Number">
-    <input id="sendAmount" placeholder="Amount">
-    <input id="pin" placeholder="Enter PIN">
-    <button onclick="send()">Send</button>
-  </div>
+<h4>History</h4>
+<ul id="history"></ul>
 
-  <div class="grid">
-    <div>📱 Airtime</div>
-    <div>🌐 Data</div>
-    <div>⚡ Electricity</div>
-    <div>🏦 Bank</div>
-    <div>💳 Card</div>
-    <div>➕ More</div>
-  </div>
-
-  <div class="section">
-    <h4>Transaction History</h4>
-    <ul id="history"></ul>
-  </div>
-
-  <div class="section">
-    <h4>Crypto Market</h4>
-    <p>₿ BTC: $<span id="btc"></span></p>
-    <p>Ξ ETH: $<span id="eth"></span></p>
-    <p>✕ XRP: $<span id="xrp"></span></p>
-  </div>
-
-  <div class="section">
-    <h4>Notifications</h4>
-    <ul id="notify"></ul>
-  </div>
-
-  <div class="section">
-    <h4>Support</h4>
-    <p>globaltrustsupport@gmail.com</p>
-  </div>
-
+<p>Support: globaltrustsupport@gmail.com</p>
 </div>
 
 <script>
-
-/* STORAGE */
-let users = JSON.parse(localStorage.getItem("users")) || {};
 let currentUser = null;
 
-/* REGISTER */
-function register() {
-  let u = newUser.value.toLowerCase();
-  let p = newPass.value;
-  let pin = newPin.value;
-
-  if (!u || !p || !pin) return alert("Fill all fields");
-
-  let acc = "GTB" + Math.floor(Math.random()*1000000000);
-
-  users[u] = {
-    password:p,
-    pin:pin,
-    balance:10000000,
-    acc:acc,
-    history:["$10,000,000 funded by Global Trust Bank (Demo)"],
-    notify:["Account created successfully"]
-  };
-
-  save();
-  alert("Account created. Your account number: " + acc);
+async function register(){
+  let res = await fetch("/register", {
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      username:username.value,
+      password:password.value,
+      pin:pin.value
+    })
+  });
+  alert((await res.json()).message);
 }
 
-/* LOGIN */
-async function login() {
-  let user = document.getElementById("username").value;
-  let pass = document.getElementById("password").value;
-
-  let res = await fetch("http://localhost:3000/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ username: user, password: pass })
+async function login(){
+  let res = await fetch("/login", {
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      username:username.value,
+      password:password.value
+    })
   });
 
   let data = await res.json();
 
-  if (data.success) {
-    document.getElementById("loginSection").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
+  if(data.message==="success"){
+    currentUser = data;
+    auth.style.display="none";
+    dashboard.style.display="block";
 
-    document.getElementById("userName").innerText = user;
-    document.getElementById("balance").innerText = "$" + data.balance.toLocaleString();
+    user.innerText = data.username;
+    load();
   } else {
-    alert("Wrong login");
+    alert("Login failed");
   }
 }
 
-/* LOAD USER */
-function load() {
-  user.innerText=currentUser;
-  balance.innerText="$"+users[currentUser].balance.toLocaleString();
-  acc.innerText=users[currentUser].acc;
+function load(){
+  balance.innerText = currentUser.user.balance;
+  history.innerHTML = "";
 
-  history.innerHTML="";
-  users[currentUser].history.forEach(h=>{
-    history.innerHTML+="<li>"+h+"</li>";
+  currentUser.user.history.forEach(h=>{
+    history.innerHTML += `<li>${h.type} - $${h.amount} (${h.note})</li>`;
   });
 
-  notify.innerHTML="";
-  users[currentUser].notify.forEach(n=>{
-    notify.innerHTML+="<li>"+n+"</li>";
+  loadCrypto();
+}
+
+async function transfer(){
+  let res = await fetch("/transfer", {
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      fromUser:currentUser.username,
+      toAccount:toAcc.value,
+      amount:Number(amount.value),
+      pin:pin2.value
+    })
   });
-}
 
-/* SAVE */
-function save() {
-  localStorage.setItem("users",JSON.stringify(users));
-}
+  let data = await res.json();
+  alert(data.message);
 
-/* DEPOSIT */
-function deposit() {
-  let amt=Number(amount.value);
-  if(amt>0){
-    users[currentUser].balance+=amt;
-    users[currentUser].history.push("Deposited $"+amt);
-    users[currentUser].notify.push("Deposit successful");
-    save(); load();
+  if(data.balance){
+    currentUser.user.balance = data.balance;
+    load();
   }
 }
 
-/* WITHDRAW */
-function withdraw() {
-  let amt=Number(amount.value);
-  if(amt>0 && amt<=users[currentUser].balance){
-    users[currentUser].balance-=amt;
-    users[currentUser].history.push("Withdrew $"+amt);
-    users[currentUser].notify.push("Withdrawal successful");
-    save(); load();
-  }
+async function loadCrypto(){
+  let res = await fetch("/crypto");
+  let data = await res.json();
+
+  crypto.innerHTML = `
+  BTC: $${data.bitcoin.usd}<br>
+  ETH: $${data.ethereum.usd}<br>
+  XRP: $${data.ripple.usd}
+  `;
 }
-
-/* SEND */
-function send() {
-  let accNum=toAcc.value;
-  let amt=Number(sendAmount.value);
-  let pinVal=pin.value;
-
-  let receiver=Object.values(users).find(u=>u.acc===accNum);
-
-  if(!receiver) return alert("Invalid account");
-
-  if(pinVal!==users[currentUser].pin) return alert("Wrong PIN");
-
-  if(amt>0 && amt<=users[currentUser].balance){
-
-    users[currentUser].balance-=amt;
-    receiver.balance+=amt;
-
-    users[currentUser].history.push("Sent $"+amt+" to "+accNum);
-    receiver.history.push("Received $"+amt);
-
-    users[currentUser].notify.push("Transfer sent");
-    receiver.notify.push("Money received");
-
-    save(); load();
-  }
-}
-
-/* CRYPTO API */
-async function crypto(){
-  let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple&vs_currencies=usd");
-  let d=await r.json();
-
-  btc.innerText=d.bitcoin.usd;
-  eth.innerText=d.ethereum.usd;
-  xrp.innerText=d.ripple.usd;
-}
-setInterval(crypto,3000);
-
 </script>
 
 </body>
