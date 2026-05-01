@@ -1,79 +1,153 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Global Trust Bank</title>
+<title>GLOBAL TRUST BANK</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #0f0f1a;
-      color: white;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0c0c1e;
+  color: white;
+}
 
-    .container {
-      padding: 20px;
-    }
+/* HEADER */
+.header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .login-card {
-      max-width: 350px;
-      margin: 100px auto;
-      padding: 20px;
-      background: #1c1c2e;
-      border-radius: 10px;
-      text-align: center;
-    }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      background: #333;
-      color: white;
-    }
+.logo img {
+  width: 35px;
+}
 
-    button {
-      padding: 12px;
-      border: none;
-      border-radius: 5px;
-      background: #6c5ce7;
-      color: white;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-    }
+.container {
+  padding: 15px;
+}
 
-    .card {
-      background: linear-gradient(90deg, #3a0ca3, #4361ee);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
+/* CARD */
+.card {
+  background: linear-gradient(135deg,#6c5ce7,#3a0ca3);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
 
-    .actions button {
-      margin-top: 5px;
-    }
-  </style>
+.card h4 {
+  margin: 0;
+}
+
+.card h2 {
+  margin-top: 10px;
+}
+
+/* INPUT */
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 10px;
+  background: #1f1f3a;
+  color: white;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.deposit { background: #6c5ce7; }
+.withdraw { background: #2d2d6e; }
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.grid div {
+  background: #1c1c2e;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* HISTORY */
+.history {
+  margin-top: 20px;
+  background: #1c1c2e;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.history ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* CRYPTO */
+.crypto {
+  margin-top: 20px;
+  background: #1c1c2e;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.crypto div {
+  margin-bottom: 10px;
+}
+
+/* SUPPORT */
+.support {
+  margin-top: 20px;
+  background: #1c1c2e;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- LOGIN -->
+<div id="loginSection" class="container">
+  <h2>GLOBAL TRUST BANK</h2>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
 
-  <!-- LOGIN -->
-  <div id="loginSection" class="login-card">
-    <h2>Global Trust Bank</h2>
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
 
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-
-    <button onclick="login()">Login</button>
+  <div class="header">
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+      <h3>GLOBAL TRUST</h3>
+    </div>
+    🔔
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" style="display:none;">
+  <div class="container">
+
     <h3>Hi, <span id="userDisplay"></span></h3>
 
     <div class="card">
@@ -83,27 +157,55 @@
 
     <input type="number" id="amount" placeholder="Enter amount">
 
-    <div class="actions">
-      <button onclick="deposit()">Deposit</button>
-      <button onclick="withdraw()">Withdraw</button>
-    </div>
-  </div>
+    <button class="deposit" onclick="deposit()">Deposit</button>
+    <button class="withdraw" onclick="withdraw()">Withdraw</button>
 
+    <!-- SERVICES -->
+    <div class="grid">
+      <div>🏦 Bank</div>
+      <div>📱 Airtime</div>
+      <div>💾 Savings</div>
+      <div>🌐 Data</div>
+      <div>⚡ Bills</div>
+      <div>➕ More</div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history">
+      <h4>Transaction History</h4>
+      <ul id="historyList"></ul>
+    </div>
+
+    <!-- CRYPTO -->
+    <div class="crypto">
+      <h4>Crypto Market</h4>
+      <div>BTC: $<span id="btc"></span></div>
+      <div>ETH: $<span id="eth"></span></div>
+      <div>XRP: $<span id="xrp"></span></div>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="support">
+      <h4>Customer Support</h4>
+      <p>Email: support@globaltrust.com</p>
+      <p>Live Chat: Available 24/7</p>
+    </div>
+
+  </div>
 </div>
 
 <script>
+
+/* USERS */
 let users = JSON.parse(localStorage.getItem("users")) || {
-  "thomas": { password: "1234", balance: 5000000 },
-  "shinichi": { password: "1111", balance: 10000000 }
+  "shinichi": { password: "1111", balance: 10000000, history: [] },
+  "thomas": { password: "1234", balance: 5000000, history: [] }
 };
 
 let currentUser = null;
 let balance = 0;
 
-function saveData() {
-  localStorage.setItem("users", JSON.stringify(users));
-}
-
+/* LOGIN */
 function login() {
   let user = document.getElementById("username").value.toLowerCase();
   let pass = document.getElementById("password").value;
@@ -112,47 +214,72 @@ function login() {
     currentUser = user;
     balance = users[user].balance;
 
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
     document.getElementById("userDisplay").innerText = user;
 
     updateBalance();
-
-    document.getElementById("loginSection").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
+    loadHistory();
   } else {
     alert("Wrong login details");
   }
 }
 
+/* UPDATE BALANCE */
 function updateBalance() {
   document.getElementById("balance").innerText =
     "$" + balance.toLocaleString();
 }
 
+/* DEPOSIT */
 function deposit() {
   let amount = Number(document.getElementById("amount").value);
-
   if (amount > 0) {
     balance += amount;
     users[currentUser].balance = balance;
-
-    saveData();
-    updateBalance();
+    users[currentUser].history.push("Deposited $" + amount);
+    save();
   }
 }
 
+/* WITHDRAW */
 function withdraw() {
   let amount = Number(document.getElementById("amount").value);
-
   if (amount > 0 && amount <= balance) {
     balance -= amount;
     users[currentUser].balance = balance;
-
-    saveData();
-    updateBalance();
-  } else {
-    alert("Invalid amount");
+    users[currentUser].history.push("Withdrew $" + amount);
+    save();
   }
 }
+
+/* SAVE */
+function save() {
+  localStorage.setItem("users", JSON.stringify(users));
+  updateBalance();
+  loadHistory();
+}
+
+/* LOAD HISTORY */
+function loadHistory() {
+  let list = document.getElementById("historyList");
+  list.innerHTML = "";
+
+  users[currentUser].history.forEach(item => {
+    let li = document.createElement("li");
+    li.innerText = item;
+    list.appendChild(li);
+  });
+}
+
+/* FAKE CRYPTO (LIVE-LIKE) */
+function loadCrypto() {
+  document.getElementById("btc").innerText = (60000 + Math.random()*2000).toFixed(2);
+  document.getElementById("eth").innerText = (3000 + Math.random()*200).toFixed(2);
+  document.getElementById("xrp").innerText = (0.5 + Math.random()*0.2).toFixed(2);
+}
+setInterval(loadCrypto,2000);
+
 </script>
 
 </body>
