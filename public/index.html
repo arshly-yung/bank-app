@@ -5,82 +5,104 @@
  <style>
 body {
   margin: 0;
-  font-family: Arial;
-  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+  background: #f2f2f7;
 }
 
-.app {
-  padding: 20px;
+.container {
+  padding: 15px;
 }
 
-.balance-card {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card {
+  background: linear-gradient(135deg, #7b2ff7, #3a7bd5);
   color: white;
   padding: 20px;
   border-radius: 15px;
-  margin-bottom: 20px;
+  margin-top: 15px;
 }
 
-.balance-card h1 {
-  margin: 10px 0;
-}
-
-.balance-card button {
-  background: white;
-  color: #2575fc;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.actions {
+.card-top {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  font-size: 14px;
 }
 
-.actions button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #2575fc;
-  color: white;
-  font-size: 16px;
+.card h1 {
+  margin: 10px 0;
+  font-size: 28px;
 }
 
-.history {
+.add-btn {
   background: white;
-  padding: 15px;
+  color: #3a7bd5;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.service {
+  background: white;
+  padding: 15px 5px;
   border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.service p {
+  margin-top: 5px;
+  font-size: 12px;
 }
 </style>
+
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-  <h2>Hi, shinichi</h2>
+  <!-- HEADER -->
+  <div class="header">
+    <h2>Hi, Thomas</h2>
+    <span class="bell">🔔</span>
+  </div>
 
   <!-- BALANCE CARD -->
-  <div class="balance-card">
-    <p>Available Balance</p>
-    <h1>$<span id="balance">0</span></h1>
-    <button onclick="deposit()">Add Money</button>
+  <div class="card">
+    <div class="card-top">
+      <span>Available Balance</span>
+      <span>👁️</span>
+    </div>
+    <h1>$5,000,000.00</h1>
+    <button class="add-btn">Add Money</button>
   </div>
 
-  <!-- ACTION BUTTONS -->
-  <div class="actions">
-    <button onclick="deposit()">Deposit</button>
-    <button onclick="withdraw()">Withdraw</button>
-  </div>
+  <!-- SERVICES -->
+  <div class="services">
 
-  <!-- HISTORY -->
-  <div class="history">
-    <h3>Transaction History</h3>
-    <ul id="history"></ul>
+    <div class="service">🏦<p>To Bank</p></div>
+    <div class="service">📱<p>Airtime</p></div>
+    <div class="service">💾<p>Savings</p></div>
+    <div class="service">💳<p>Card</p></div>
+
+    <div class="service">🌐<p>Data</p></div>
+    <div class="service">⚡<p>Electricity</p></div>
+    <div class="service">🎯<p>Betting</p></div>
+    <div class="service">➕<p>More</p></div>
+
   </div>
 
 </div>
