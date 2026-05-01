@@ -172,6 +172,7 @@ body {
 </div>
 
 <script>
+  localStorage.clear();
 
 let users = JSON.parse(localStorage.getItem("users")) || {
   "thomas": { password: "1234", balance: 5000000, history: [] },
